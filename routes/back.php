@@ -17,3 +17,11 @@ use App\Http\Controllers\Dashboard\DashboardController;
 
 
 Route::get('/home',[DashboardController::class,'index'])->name('home');
+
+
+Route::get('/dashboard/user', function () {
+    return view('dashboard.User.dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard.user');
+
+
+require __DIR__.'/auth.php';
