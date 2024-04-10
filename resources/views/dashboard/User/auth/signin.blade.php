@@ -4,6 +4,11 @@
     <link href="{{ URL::asset('dashboard/assets/plugins/sidemenu-responsive-tabs/css/sidemenu-responsive-tabs.css') }}"
         rel="stylesheet">
 @endsection
+<style>
+    .login-form {
+        display: none;
+    }
+</style>
 @section('content')
     <div class="container-fluid">
         <div class="row no-gutter">
@@ -34,13 +39,13 @@
                                             <h2>مرحبًا بعودتك!</h2>
 
                                             <div class="mb-4">
-                                                <p class="mg-b-10">حدد طريقة الدخول</p>
+                                                <label class="mg-b-10">حدد طريقة الدخول</label>
                                                 <div class="SumoSelect sumo_somename" tabindex="0" role="button"
-                                                    aria-expanded="true"><select name="somename"
-                                                        class="form-control SlectBox SumoUnder"
+                                                    aria-expanded="true">
+                                                    <select name="somename" class="form-control SlectBox SumoUnder"
                                                         onclick="console.log($(this).val())"
-                                                        onchange="console.log('change is firing')" tabindex="-1">
-                                                        <!--placeholder-->
+                                                        onchange="console.log('change is firing')" tabindex="-1"
+                                                        id="selectForm">
                                                         <option value="" selected disabled>أختار من القائمة</option>
                                                         <option value="user">الدخول كمريض</option>
                                                         <option value="admin">الدخول أدمن</option>
@@ -48,48 +53,108 @@
                                                 </div>
                                             </div>
 
+                                            {{-- Login Form User --}}
+                                            <div class="login-form" id="user">
+                                                <h5 class="font-weight-semibold mb-4">الدخول كمريض</h5>
+                                                <form method="POST" action="{{ route('user.login') }}">
+                                                    @csrf
 
-                                            <h5 class="font-weight-semibold mb-4">الدخول كمستخدم</h5>
-                                            <form method="POST" action="{{ route('user.login') }}">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <label>البريد الالكترونى</label> <input class="form-control"
-                                                        name="email" placeholder="Enter your email" type="text">
-                                                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
-
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>كلمة المرور</label> <input class="form-control" name="password"
-                                                        placeholder="Enter your password" type="password"
-                                                        autocomplete="current-password">
-                                                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-
-                                                </div>
-
-                                                <!-- Remember Me -->
-                                                <div class="block mt-4">
-                                                    <label for="remember_me" class="inline-flex items-center">
-                                                        <input id="remember_me" type="checkbox"
-                                                            class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800"
-                                                            name="remember">
-                                                        <span
-                                                            class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('تذكرنى') }}</span>
-                                                    </label>
-                                                </div>
-
-
-                                                <button class="btn btn-main-primary btn-block">الدخول</button>
-                                                <div class="row row-xs">
-                                                    <div class="col-sm-6">
-                                                        <button class="btn btn-block"><i class="fab fa-facebook-f"></i>
-                                                            Signup with Facebook</button>
+                                                    {{-- Email Input --}}
+                                                    <div class="form-group">
+                                                        <label>البريد الالكترونى</label> <input class="form-control"
+                                                            name="email" placeholder="Enter your email" type="text">
+                                                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                                     </div>
-                                                    <div class="col-sm-6 mg-t-10 mg-sm-t-0">
-                                                        <button class="btn btn-info btn-block"><i
-                                                                class="fab fa-twitter"></i> Signup with Twitter</button>
+
+                                                    {{-- Password Input --}}
+                                                    <div class="form-group">
+                                                        <label>كلمة المرور</label> <input class="form-control"
+                                                            name="password" placeholder="Enter your password"
+                                                            type="password" autocomplete="current-password">
+                                                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+
                                                     </div>
-                                                </div>
-                                            </form>
+
+                                                    {{-- Remember Me --}}
+                                                    <div class="block mt-4">
+                                                        <label for="remember_me" class="inline-flex items-center">
+                                                            <input id="remember_me" type="checkbox"
+                                                                class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800"
+                                                                name="remember">
+                                                            <span
+                                                                class="ms-2 text-sm text-gray-600 dark:text-gray-400 mx-1">{{ __('تذكرنى') }}</span>
+                                                        </label>
+                                                    </div>
+
+                                                    {{-- Login Input --}}
+                                                    <button class="btn btn-main-primary btn-block">الدخول</button>
+                                                    <div class="row row-xs">
+                                                        <div class="col-sm-6">
+                                                            <button class="btn btn-block"><i class="fab fa-facebook-f"></i>
+                                                                Signup with Facebook</button>
+                                                        </div>
+                                                        <div class="col-sm-6 mg-t-10 mg-sm-t-0">
+                                                            <button class="btn btn-info btn-block"><i
+                                                                    class="fab fa-twitter"></i> Signup with Twitter</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+
+                                            {{-- Login Form Admin --}}
+                                            <div class="login-form" id="admin">
+                                                <h5 class="font-weight-semibold mb-4">الدخول كأدمن</h5>
+                                                <form method="POST" action="{{ route('admin.login') }}">
+                                                    @csrf
+
+                                                    {{-- Email Input --}}
+                                                    <div class="form-group">
+                                                        <label>البريد الالكترونى</label> <input class="form-control"
+                                                            name="email" placeholder="Enter your email" type="text">
+                                                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                                    </div>
+
+                                                    {{-- Password Input --}}
+                                                    <div class="form-group">
+                                                        <label>كلمة المرور</label> <input class="form-control"
+                                                            name="password" placeholder="Enter your password"
+                                                            type="password" autocomplete="current-password">
+                                                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+
+                                                    </div>
+
+                                                    {{-- Remember Me --}}
+                                                    <div class="block mt-4">
+                                                        <label for="remember_me" class="inline-flex items-center">
+                                                            <input id="remember_me" type="checkbox"
+                                                                class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800"
+                                                                name="remember">
+                                                            <span
+                                                                class="ms-2 text-sm text-gray-600 dark:text-gray-400 mx-1">{{ __('تذكرنى') }}</span>
+                                                        </label>
+                                                    </div>
+
+                                                    {{-- Login Input --}}
+                                                    <button class="btn btn-main-primary btn-block">الدخول</button>
+                                                    <div class="row row-xs">
+                                                        <div class="col-sm-6">
+                                                            <button class="btn btn-block"><i
+                                                                    class="fab fa-facebook-f"></i>
+                                                                Signup with Facebook</button>
+                                                        </div>
+                                                        <div class="col-sm-6 mg-t-10 mg-sm-t-0">
+                                                            <button class="btn btn-info btn-block"><i
+                                                                    class="fab fa-twitter"></i> Signup with
+                                                                Twitter</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+
+
+                                            {{-- Forget Password --}}
                                             <div class="main-signin-footer mt-5">
                                                 @if (Route::has('password.request'))
                                                     <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
@@ -97,6 +162,7 @@
                                                         {{ __('نسيت كلمة المرور؟') }}
                                                     </a>
                                                 @endif
+                                                {{-- Register --}}
                                                 <p>لا أملك حساب <a href="{{ url('/' . ($page = 'signup')) }}">أنشاء حساب
                                                         جديد</a></p>
                                             </div>
@@ -112,4 +178,12 @@
     </div>
 @endsection
 @section('js')
+    <script>
+        $('#selectForm').change(function() {
+            var myID = $(this).val();
+            $('.login-form').each(function() {
+                myID === $(this).attr('id') ? $(this).show() : $(this).hide();
+            });
+        });
+    </script>
 @endsection

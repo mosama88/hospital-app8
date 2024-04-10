@@ -24,4 +24,11 @@ Route::get('/dashboard/user', function () {
 })->middleware(['auth', 'verified'])->name('dashboard.user');
 
 
+
+Route::get('/dashboard/admin', function () {
+    return view('dashboard.Admin.dashboard');
+})->middleware(['auth:admin', 'verified'])->name('dashboard.admin');
+
+
+
 require __DIR__.'/auth.php';
