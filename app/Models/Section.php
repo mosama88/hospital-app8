@@ -12,4 +12,6 @@ class Section extends Model
 
     use Translatable;
     public $translatedAttributes = ['name'];
+
+    protected $fillable = ['name'];
 }

@@ -47,37 +47,59 @@
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <h4 class="card-title mg-b-0">Bordered Table</h4>
-                        <i class="mdi mdi-dots-horizontal text-gray"></i>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                            data-whatever="@mdo">
+                            {{ trans('dashboard/index_trans.add_section') }}
+                        </button>
+
+
+                        @include('dashboard.sections.add')
+
+
                     </div>
-                    <p class="tx-12 tx-gray-500 mb-2">Example of Valex Bordered Table.. <a href="">Learn more</a></p>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
+                        @if (session('success') != null)
+                            <div class="col-6 mx-auto">
+                                <div class="alert alert-success text-center ">
+                                    {{ session('success') }}
+                                </div>
+                            </div>
+                        @endif
                         <table id="example" class="table key-buttons text-md-nowrap">
                             <thead>
                                 <tr>
                                     <th class="border-bottom-0">#</th>
-                                    <th class="border-bottom-0">أسم القسم</th>
-                                    <th class="border-bottom-0">الأضافة</th>
-                                    <th class="border-bottom-0">العمليات</th>
+                                    <th class="border-bottom-0">{{ trans('dashboard/index_trans.section_name') }}</th>
+                                    <th class="border-bottom-0">{{ trans('dashboard/index_trans.created_at') }}</th>
+                                    <th class="border-bottom-0">{{ trans('dashboard/index_trans.transaction') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>System </td>
-                                    <td>Edinburgh</td>
-                                    <td>61</td>
-                                </tr>
+                                @foreach ($sections as $section)
+                                    <tr>
+                                        <td>{{  $loop->iteration }}</td>
+                                        <td>{{ $section->name }} </td>
+                                        <td>{{ $section->created_at->diffForHumans() }}</td>
+                                        <td>
+                                            <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"  data-toggle="modal" href="#edit"><i class="las la-pen"></i></a>
+                                            <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"  data-toggle="modal" href="#delete{{$section->id}}"><i class="las la-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
+                        @include('dashboard.sections.edit')
+                        @include('dashboard.sections.delete')
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-	
+
     <!--/div-->
     <!-- row closed -->
     </div>

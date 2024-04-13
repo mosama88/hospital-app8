@@ -7,5 +7,6 @@ interface SectionRepositoryInterface
 {
 
     public function index();
+    public function store($request);
     
 }
