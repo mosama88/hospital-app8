@@ -1,31 +1,32 @@
-
-<!-- Modal -->
-<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="edit{{ $section->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{trans('Dashboard/sections_trans.edit_sections')}}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{ trans('Dashboard/sections_trans.edit_section') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="#" method="post">
-                {{-- <form action="{{ route('Sections.update', 'test') }}" method="post"> --}}
+            <div class="modal-body">
+                <form method="POST" action="{{ route('sections.update', $section->id) }}" autocomplete="off">
+                    @csrf
+                    @method('PATCH')
+                    
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">{{ trans('Dashboard/sections_trans.section_name') }}</label>
+                        <input type="hidden" name="id" value="{{ $section->id }}" class="form-control"
+                            id="recipient-name">
+                        <input type="text" name="name" value="{{ $section->name }}" class="form-control"
+                            id="recipient-name">
+                        @error('name')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <button type="submit" class="btn btn-primary">{{ trans('Dashboard/sections_trans.edit') }}</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('Dashboard/sections_trans.close') }}</button>
 
-                {{-- {{ method_field('patch') }}
-                {{ csrf_field() }} --}}
-                @csrf
-                <div class="modal-body">
-                    <label for="exampleInputPassword1">{{trans('Dashboard/sections_trans.name_sections')}}</label>
-                    <input type="hidden" name="id" value="#">
-                    <input type="text" name="name" value="#" class="form-control">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{trans('Dashboard/sections_trans.Close')}}</button>
-                    <button type="submit" class="btn btn-primary">{{trans('Dashboard/sections_trans.submit')}}</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div> 
+</div>
